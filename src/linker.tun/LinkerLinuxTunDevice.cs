@@ -146,10 +146,10 @@ namespace linker.tun
 
                     $"iptables -t nat -A POSTROUTING -o {Name} -j MASQUERADE",
                     $"iptables -A FORWARD -i {interfaceLinux} -o {Name} -j ACCEPT",
-                    $"iptables -A FORWARD -i {Name} -o {interfaceLinux} -m state --state ESTABLISHED,RELATED -j ACCEPT",
+                    $"iptables -A FORWARD -i {Name} -o {interfaceLinux} -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT",
 
                     $"iptables -A FORWARD -i {Name} -j ACCEPT",
-                    $"iptables -A FORWARD -o {Name} -m state --state ESTABLISHED,RELATED -j ACCEPT",
+                    $"iptables -A FORWARD -o {Name} -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT",
                     $"iptables -t nat -A POSTROUTING ! -o {Name} -s {network}/{prefixLength} -j MASQUERADE",
                 });
             }
